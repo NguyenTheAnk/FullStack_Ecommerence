@@ -18,6 +18,7 @@ import Alert from '@mui/material/Alert';
 import MyList from "./Pages/MyList";
 import Checkout from "./Pages/Checkout";
 import Orders from "./Pages/Orders";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 const MyContext = createContext();
 
 function App() {
@@ -42,6 +43,11 @@ function App() {
     error: false,
     open:false
   });
+  const initialOptions = {
+    "client-id": "AaCP2mCf9dgzQNT2DIBCIoJT86cMKBIFSHrZi4sISarqQMXmfnAhoc6_lezq-deEIzbwDql6IMEhRKWT",
+    currency: "USD",
+    intent: "capture",
+  };
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -93,6 +99,7 @@ function App() {
       msg: ''
     });
   };
+  
   const getCartData=()=>{
     fetchDataFromAPI(`/api/cart`).then((res)=>{
       setCartData(res);
@@ -129,6 +136,9 @@ function App() {
        
       })
     }
+    <PayPalScriptProvider options={initialOptions}>
+        <Checkout/>
+    </PayPalScriptProvider>
   const values ={
     countryList,
     setselectedCountry,

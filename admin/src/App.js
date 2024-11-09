@@ -26,6 +26,9 @@ import SubCategoryList from './pages/Category/subCategoryList';
 import AddProductRAMS from './pages/Products/addProductRAMS';
 import AddProductWeight from './pages/Products/addProductWeight';
 import AddProductSize from './pages/Products/addProductSize';
+import Orders from './pages/Orders';
+// import {useLocation} from 'react-router-dom';
+
 const MyContext = createContext();
 
 function App() {
@@ -165,7 +168,7 @@ function App() {
             <Route path = "/login" exact= {true} element= {<Login/>}/>
             <Route path = "/signUp" exact= {true} element= {<SignUp/>}/>
             <Route path = "/products" exact= {true} element= {<Products/>}/>
-            <Route path = "/product/details" exact= {true} element= {<ProductDetails/>}/>
+            <Route path = "/product/details/:id" exact= {true} element= {<ProductDetails/>}/>
             <Route path = "/product/upload" exact= {true} element= {<ProductUpload/>}/>
             <Route path = "/product/edit/:id" exact= {true} element= {<EditProduct/>}/>
             <Route path = "/category" exact= {true} element= {<CategoryList/>}/>
@@ -177,6 +180,7 @@ function App() {
             <Route path = "/productRAMS/add" exact= {true} element= {<AddProductRAMS/>}/>
             <Route path = "/productWeight/add" exact= {true} element= {<AddProductWeight/>}/>
             <Route path = "/productSize/add" exact= {true} element= {<AddProductSize/>}/>
+            <Route path = "/orders/" exact= {true} element= {<Orders/>}/>
           </Routes>
         </div>
       </div>

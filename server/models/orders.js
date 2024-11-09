@@ -35,7 +35,10 @@ const ordersSchema = mongoose.Schema({
     },  
     products: [
         {
-            productName: {
+            productId: {
+                type: String,
+            },
+            productTitle: {
                 type: String,
             },
             quantity: {
@@ -47,11 +50,15 @@ const ordersSchema = mongoose.Schema({
             image: {
                 type: String,
             },
-            total: {
+            subTotal: {
                 type: Number,
             }
         }
-    ],  
+    ], 
+    status: {
+        type: String,
+        default: 'Pending'
+    },
     date: {
         type: Date,
        default: Date.now

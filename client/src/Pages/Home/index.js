@@ -87,8 +87,8 @@ const Home = () =>{
                             <div className="col-md-9 productRow">
                                 <div className="d-flex align-items-center">
                                     <div className="info w-75">
-                                        <h3 className="mb-0 hd">Bán chạy nhất</h3>
-                                        <p className="text-light text-sml mb-1">Đừng bỏ lỡ các ưu đãi hiện tại cho đến hết tháng 12</p>
+                                        <h3 className="mb-0 hd">BEST SELLER</h3>
+                                        <p className="text-light text-sml mb-1">Don't miss out on current offers until the end of December</p>
                                     </div>
                                     <div className="ml-auto">
                                         <Tabs value={value} onChange={handleChange} variant= "scrollable" scrollButtons ="auto" className= "filterTabs">
@@ -143,11 +143,11 @@ const Home = () =>{
 
                                 <div className="d-flex align-items-center mt-5">
                                     <div className="info w-75">
-                                        <h3 className="mb-0 hd">Sản phẩm mới</h3>
-                                        <p className="text-light text-sml mb-0">Sản phẩm mới đã được nhập về kho</p>
+                                        <h3 className="mb-0 hd">PRODUCT NEWS</h3>
+                                        <p className="text-light text-sml mb-0">New products have been imported to the warehouse</p>
                                     </div>
 
-                                    <Button className="viewAllBtn ml-auto">Xem tất cả <IoIosArrowRoundForward/></Button>
+                                    <Button className="viewAllBtn ml-auto">Views All <IoIosArrowRoundForward/></Button>
                                 </div>
                                  
                                 <div className="product_row w-100 mt-4"> 
@@ -177,10 +177,10 @@ const Home = () =>{
                                  <div className="d-flex align-items-center mt-4">
                                     <div className="info w-75">
                                         <h3 className="mb-0 hd">ELECTRONICS</h3>    
-                                        <p className="text-light text-sml mb-0">Đừng bỏ lỡ các ưu đãi hiện tại cho đến hết tháng 12</p>
+                                        <p className="text-light text-sml mb-0">Don't miss out on current offers until the end of December</p>
                                     </div>
 
-                                    <Button className="viewAllBtn ml-auto">Xem tất cả <IoIosArrowRoundForward/></Button>
+                                    <Button className="viewAllBtn ml-auto">Views All <IoIosArrowRoundForward/></Button>
                                 </div>
                                 <div className="product_row w-100 mt-4"> 
 
@@ -227,9 +227,9 @@ const Home = () =>{
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-6">
-                                            <p className="text-white mb-1">Giảm 20% cho đơn hàng đầu tiên</p>
-                                            <h3 className="text-white"> Hãy gửi cho chúng tôi mong muốn của bạn!</h3>
-                                            <p className="text-light">Tham gia đăng ký gmail của chúng tôi ngay bây giờ để nhận thông tin cập nhật về các chương trình khuyến mãi và phiếu giảm giá</p>
+                                            <p className="text-white mb-1">20% off your first order</p>
+                                            <h3 className="text-white"> Send us your wishes!</h3>
+                                            <p className="text-light">Join our gmail subscription now to get updates on promotions and coupons</p>
 
                                             <form>
                                                 <IoMailOutline/>

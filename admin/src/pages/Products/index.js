@@ -103,12 +103,14 @@ const Products = () => {
                                 href="/"
                                 label="Home"
                                 icon={<HomeIcon fontSize="small" />}
+                                style={{ cursor: "pointer" }}
                                 />
                                 <StyleBreadrumb
                                 component="a"
                                 href="/products"
                                 label="Products"
                                 deleteIcon={<ExpandMoreIcon />}
+                                style={{ cursor: "pointer" }}
                             />
                               
                         </Breadcrumbs>
@@ -290,7 +292,7 @@ const Products = () => {
                                                         <td><Rating name="read-only" defaultValue={item?.rating} precision={0.5} size="small" readOnly/></td>
                                                         <td>
                                                             <div className="actions d-flex align-items-center">
-                                                                <Link to="/product/details">
+                                                                <Link to={`/product/details/${item.id}`}>
                                                                     <Button className="secondary" color="secondary"><FaEye/></Button>
                                                                 </Link>
                                                                 <Link to={`/product/edit/${item.id}`}>

@@ -47,7 +47,7 @@ router.get(`/`, async (req, res) => {
 
 router.get(`/:id`, async (req, res) => {
     subCategoryEditId = req.params.id;
-    const subCategory = await SubCategory.findById(req.params.id);
+    const subCategory = await SubCategory.findById(req.params.id).populate('category');
 
     if(!subCategory){
         res.status(500).json({message: 'The sub category with th given ID was not found'})
@@ -83,16 +83,6 @@ router.delete(`/:id`, async (req, res) => {
         success: true,
         message: 'Sub Category Deleted!'
     })
-});
-router.get(`/:id`, async (req, res) => {
-    subCategoryEditId = req.params.id;
-    const subCat = await SubCategory.findById(req.params.id);
-    // .populate('category subCat');
-
-    if(!subCat){
-        res.status(500).json({message: 'The sub Category with th given ID was not found'})
-    }
-    return res.status(200).send(subCat);
 });
 router.put('/:id', async (req, res) => {
 

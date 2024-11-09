@@ -159,6 +159,12 @@ justify-content: center; width: 45px !important; height: 45px !important; backgr
 font-family: FontAwesome !important; font-weight: bold;  box-shadow:  0 1px 3px rgb(0,0,0 / 12%), 0 1px 2px rgb(0,0,0 / 24%) !important;} 
 
 .tableFooter{padding-bottom: 20px; justify-content: center; align-items: center;}
+.tableFooter p{margin-left: 15px;}
+
+.tableFooter .pagination{margin-left: auto;}
+.tableFooter  p{font-size: 13px; font-weight: 500; margin-bottom: 0px;}
+
+
 .css-1gaup4j-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {background-color: #0858f7 !important;}
 
 /* Nút điều hướng chung */
@@ -966,3 +972,9 @@ nav .navPart2 .list-inline-item img {
 
 .orderInfo{background: #fafafa !important; padding: 25px !important;}
 .orderInfo thead{border-top: 1px solid rgba(0, 0, 0, 0.1) !important; border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;}
+
+.orderTable th,.orderTable td{white-space: nowrap;}
+.orderTable .img{width: 50px; height: 40px; overflow: hidden;}
+.orderTable .img img{width: 100%;}
+
+

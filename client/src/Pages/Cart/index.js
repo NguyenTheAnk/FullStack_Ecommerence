@@ -1,13 +1,13 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Rating from '@mui/material/Rating';
 import QuantityBox from "../../Components/QuantityBox";
 import { IoMdClose } from "react-icons/io";
 import Button from '@mui/material/Button';
 import { MyContext } from "../../App";
 import { useContext, useEffect, useState } from "react";
-import { deleteData, editData, fetchDataFromAPI, postData } from "../../utils/api";
+import { deleteData, editData, fetchDataFromAPI } from "../../utils/api";
 import { IoBagCheckOutline } from "react-icons/io5";
-import {loadStripe} from '@stripe/stripe-js';
+// import {loadStripe} from '@stripe/stripe-js';
 const Cart = () => {
     const [productQuantity, setProductQuantity] = useState();
     const [changeQuantity, setChangeQuantity] = useState(0);
@@ -51,7 +51,7 @@ const Cart = () => {
             })
         } 
     }
-    const history = useNavigate();
+    // const history = useNavigate();
     const removeItem=(id)=>{
         deleteData(`/api/cart/${id}`).then((res)=>{
             context.setAlertBox({

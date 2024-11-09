@@ -81,13 +81,14 @@ router.post('/create', async (req, res) => {
         paymentId: req.body.paymentId,
         products: req.body.products,
     });
-    order = await order.save();
+
     if(!order){
         res.status(500).json({
             error: err,
             success: false
         })
     }
+    order = await order.save();
     res.status(201).json(order);
 });
 
@@ -106,6 +107,7 @@ router.put('/:id', async (req, res) => {
             userId: req.body.userId,
             paymentId: req.body.paymentId,
             products: req.body.products,
+            status: req.body.status
         },
         {new: true}
         )

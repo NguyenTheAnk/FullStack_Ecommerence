@@ -92,9 +92,9 @@ const Sidebar =(props)=>{
                         <RangeSlider value = {value} onInput= {setValue} min = {100} max = {60000} step= {5} />
                         <div className='d-flex pt-2 pb-2 priceRange'>
                             <span>
-                                From: <strong className='text-dark'>Rs: {value[0]}</strong>
+                                From: <strong className='text-dark'>$ {value[0]}</strong>
                             </span>
-                            <span className='ml-auto'>From: <strong className='text-dark'>Rs: {value[1]}</strong></span>
+                            <span className='ml-auto'>From: <strong className='text-dark'>$ {value[1]}</strong></span>
                         </div>
                     </div>     
 

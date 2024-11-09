@@ -11,7 +11,7 @@ const HomeCat = (props) =>{
         
         <section className="homeCat">
             <div className="container sidebarNav">
-                <h3 className="mb-3 hd">Danh mục</h3>
+                <h3 className="mb-3 hd">CATEGORY</h3>
             <Swiper 
                     slidesPerView ={10}
                     spaceBetween = {10}

@@ -6,7 +6,7 @@ router.get('/', async (req, res) => {
     let reviews = [];
 
     try{
-        if(req.query.productId === undefined && req.query.productId !== null && req.query.productId !==""){
+        if(req.query.productId === undefined || req.query.productId !== null || req.query.productId !==""){
             reviews = await ProductReviews.find({ productId: req.query.productId});
         }else{
             reviews = await ProductReviews.find();

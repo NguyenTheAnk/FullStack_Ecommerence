@@ -2,36 +2,50 @@ import Button from '@mui/material/Button';
 import { MdDashboard } from "react-icons/md";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaProductHunt } from "react-icons/fa6";
-// import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart } from "react-icons/fa";
 // import { MdMessage } from "react-icons/md";
 // import { IoMdNotifications } from "react-icons/io";
 // import { FaUser } from "react-icons/fa";
 // import { IoSettingsSharp } from "react-icons/io5";
+import { BiSolidCategoryAlt } from "react-icons/bi";
 import { Link } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { IoMdLogOut } from "react-icons/io";
 import { MyContext } from '../../App';
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
 const Sidebar = () => {
 
     const [activeTab, setActiveTab] =useState(0);
     const [isToggleSubmenu, setIsToggleSubmenu] =useState(false);
-
+    const [isLogin, setIsLogin] = useState(true);
+    const history = useNavigate();
     const context = useContext(MyContext);
     const isOpenSubmenu= (index)=>{
         setActiveTab(index);
         setIsToggleSubmenu(!isToggleSubmenu);
     }
+    useEffect(()=>{
+        const token = localStorage.getItem("token");
+        if(token!==null && token!==undefined && token!==""){
+          setIsLogin(true);
+        }
+        else{
+         history("/login");
+        }
+        }, []);
     return (
         <>
             <div className="sidebar">
                 <ul>
                     <li> 
-                        <Link to="/">
+                        <NavLink exact activeClassName='is-active' to="/">
                             <Button className={`w-100 ${activeTab===0 ? 'active' : ''}`} onClick={()=> isOpenSubmenu(0)}> 
                                 <span className='icon'><MdDashboard/></span>Dashboard
                                 <span className='arrow'><FaAngleRight/></span>
                             </Button>
-                        </Link>
+                        </NavLink>
                     </li>
                     <li> 
                             <Button className={`w-100 ${activeTab===1 && isToggleSubmenu===true ? 'active' : ''}`} onClick={()=> isOpenSubmenu(1)}> 
@@ -53,7 +67,7 @@ const Sidebar = () => {
                     <li> 
                             <Button className={`w-100 ${activeTab===2 && isToggleSubmenu===true ? 'active' : ''}`} onClick={()=> isOpenSubmenu(2)}> 
                                 
-                                    <span className='icon'><FaProductHunt/></span>Category
+                                    <span className='icon'><BiSolidCategoryAlt/></span>Category
                                     <span className='arrow'><FaAngleRight/></span>
                             </Button>
                             <div className={`submenuWrapper ${activeTab===2 && isToggleSubmenu===true ? 'colapse' : 'colapsed'}`}>
@@ -66,15 +80,14 @@ const Sidebar = () => {
                             </div>
                            
                     </li>
-                    {/* <li> 
-                        <Link to="/">
-                        <Button className={`w-100 ${activeTab===2 ? 'active' : ''}`} onClick={()=> isOpenSubmenu(2)}> 
-                                <span className='icon'><FaShoppingCart/></span>Orders
-                                <span className='arrow'><FaAngleRight/></span>
-                            </Button>
-                        </Link>
-                    </li>
                     <li> 
+                        <NavLink exact activeClassName='is-active' to="/orders">
+                            <Button className={`w-100 ${activeTab===3 && isToggleSubmenu===true ? 'active' : ''}`} onClick={()=> isOpenSubmenu(3)}> 
+                                    <span className='icon'><FaShoppingCart/></span>Orders
+                                </Button>
+                        </NavLink>
+                    </li>
+                    {/* <li> 
                         <Link to="/">
                         <Button className={`w-100 ${activeTab===3 ? 'active' : ''}`} onClick={()=> isOpenSubmenu(3)}> 
                                 <span className='icon'><MdMessage/></span>Messages

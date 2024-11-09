@@ -54,7 +54,7 @@ const Header = () =>{
          <div className="headerWrapper">
             <div className="top-strip bg-blue">
                 <div className="container">
-                    <p className="mb-0 mt-0 text-center"> <b>Chào mừng bạn đến với cửa hàng của chúng tôi!</b></p>
+                    <p className="mb-0 mt-0 text-center"> <b>Welcome to our e-commerce store!</b></p>
                 </div>
             </div>
             <header className="header">

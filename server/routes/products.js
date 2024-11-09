@@ -447,7 +447,7 @@ router.delete(`/:id`, async (req, res) => {
 
 router.get(`/:id`, async (req, res) => {
     productEditId = req.params.id;
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate("category subCat");
     // .populate('category subCat');
 
     if(!product){

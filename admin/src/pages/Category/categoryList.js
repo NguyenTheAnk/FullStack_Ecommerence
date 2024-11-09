@@ -84,19 +84,21 @@ const CategoryList = () => {
             <div className="right-content w-100">
                     <div className="card shadow border-0 w-100 flex-row p-4">
                         <h5 className="mb-0">Category List</h5>
-                        <div className="ml-auto d-flex align-items-center">
+                        <div className="ml-auto d-flex align-items-center" >
                         <Breadcrumbs aria-label="breadcrumbs" className="ml-auto breadcrumbs_">
                             <StyleBreadrumb
                                 component="a"
                                 href="/"
                                 label="Home"
                                 icon={<HomeIcon fontSize="small" />}
+                                style={{ cursor: "pointer" }}
                                 />
                                 <StyleBreadrumb
                                 component="a"
                                 href="/category"
                                 label="Category"
                                 deleteIcon={<ExpandMoreIcon />}
+                                style={{ cursor: "pointer" }}
                             />
                               
                         </Breadcrumbs>
@@ -104,7 +106,7 @@ const CategoryList = () => {
                         </div>
                     </div>
 
-                <div className="card shadow border-0 p-3 mt-4">
+                <div className="card shadow border-0 p-3 mt-4 ">
                     <div className="row cardFilters mt-2">                       
                         <div className="table-responsive">
                             <table className="table table-bordered v-align">

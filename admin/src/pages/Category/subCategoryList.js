@@ -91,12 +91,14 @@ const SubCategoryList = () => {
                                 href="/"
                                 label="Home"
                                 icon={<HomeIcon fontSize="small" />}
+                                style={{ cursor: "pointer" }}
                                 />
                                 <StyleBreadrumb
                                 component="a"
                                 href="/subCategory"
                                 label="Sub Category"
                                 deleteIcon={<ExpandMoreIcon />}
+                                style={{ cursor: "pointer" }}
                             />
                               
                         </Breadcrumbs>
