@@ -4,18 +4,15 @@ import { Chip, emphasize, styled } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
 import { FaCloudUploadAlt } from "react-icons/fa";
-// import { IoCloseSharp } from "react-icons/io5";
-// import { FaRegImages } from "react-icons/fa";
-// import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { useContext, useState, useEffect } from 'react';
-import { deleteData, deleteImages, fetchDataFromAPI, postData, postDataImg } from '../../utils/api';
-// import OutlinedInput from '@mui/material/OutlinedInput';
+import { deleteData, deleteImages, editData, postData, postDataImg } from '../../utils/api';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import { MyContext } from '../../App';
-// import { useSnackbar } from 'notistack';
 import { FaRegImages } from "react-icons/fa";
+import { useParams } from "react-router-dom";
+import { fetchDataFromAPI } from "../../utils/api";
 import { IoCloseSharp } from 'react-icons/io5';
 const StyleBreadrumb= styled(Chip)(({theme})=>{
     const backgroundColor = theme.palette.mode ==='light' 
@@ -35,77 +32,45 @@ const StyleBreadrumb= styled(Chip)(({theme})=>{
         },
     };
 });
-const CategoryAdd = () => {
+const HomeSlideEdit = () => {
     const [isLoading,setIsLoading] = useState(false);
-    const [uploading,setUploading] = useState(false);
     const context = useContext(MyContext);
     // const { enqueueSnackbar } = useSnackbar();
-    const [previews, setPreviews] = useState([]);
-    const [files, setFiles] = useState([]);
+    const [previews, setPreviews] = useState();
     const [imgFiles, setImgFiles] = useState();
+    // const [files, setFiles]= useState([]);
+    const [homeSlide, setHomeSlide] = useState([]);
+    // const [isSelectedFiles,setIsSelectedFiles] = useState(false);
+    const [uploading,setUploading] = useState(false);
     const [formField, setFormField] = useState({
-        name: '',
         images: [],
-        color: '',
     });
-    const formData = new FormData();
-    const history =useNavigate();
-    const changeInput= (e) => {
-        setFormField(()=> (
-            {
-                ...formField,
-                [e.target.name]: e.target.value
-            }
-        ))
-    };
-
-   
+    let {id} = useParams();
     let img_arr= [];
     let uniqueArray=[];
-    const removeImg= async(index, imgUrl)=>{
-        const imgIndex = previews.indexOf(imgUrl);
-        deleteImages(`/api/category/deleteImage?img=${imgUrl}`).then((res)=>{
-            context.setAlertBox({
-                open: true,
-                error: false,
-                msg: 'Image deleted successfully!'
+    const formData = new FormData();
+    const history =useNavigate();
+    useEffect(()=>{
+        fetchDataFromAPI("/api/imageUpload").then((res)=>{
+           res?.map((item)=>{
+            item?.images?.map((img)=>{
+                deleteImages(`/api/homeBanner/deleteImage/${img}`).then((res)=>{
+                    deleteData(`/api/imageUpload/deleteAllImages`);
+                })
             })
+           })
         })
-        if(imgIndex >-1){
-            previews.splice(index,1);
-        }
-    }
+    },[]);
     const onChangeFile= async(e, apiEndPoint)=>{
         try{
             // const imgArr = [];
             const files = e.target.files;
             setUploading(true);
-            // setImgFiles(e.target.files);
             for(var i=0; i < files.length; i++){
                 
                 if(files[i] && (files[i].type=== 'image/jpeg' || files[i].type==='image/jpg' || files[i].type==='image/png' || files[i].type==='image/webp')){
-                    // setImgFiles(e.target.files);
                     const file = files[i];
-                    // imgArr.push(file);
-                    // setFormField(file);
                     formData.append(`images`, file);
-
-                    // setFiles(imgArr);
-                    // context.setAlertBox({
-                    //     open: true,
-                    //     error: false,
-                    //     msg: 'Image uploaded successfully!'
-                    // });
-
-                    // setIsSelectedFiles(true);
-                    // console.log(imgArr);
-                    // postData(apiEndPoint, formData).then((res)=>{
-                    //     context.setAlertBox({
-                    //         open: true,
-                    //         error: false,
-                    //         msg: 'Image uploaded successfully!'
-                    //     })
-                    // })
                 }
                 else{
                     context.setAlertBox({
@@ -118,7 +83,7 @@ const CategoryAdd = () => {
         }catch(error){
             console.log(error);
         }
-
+    
         postDataImg(apiEndPoint, formData).then((res)=>{
             fetchDataFromAPI("/api/imageUpload").then((response)=>{
                 if(response!==undefined && response!==null && response!== "" && response.length!== 0){
@@ -135,7 +100,7 @@ const CategoryAdd = () => {
                 //             });
                 //         }
                 //     });
-
+    
                     uniqueArray = img_arr.filter((item,index)=> img_arr.indexOf(item)===index);
                     const appendedArray = [...previews,...uniqueArray];
                     setPreviews(appendedArray);
@@ -152,48 +117,24 @@ const CategoryAdd = () => {
             })
         });
     }
-    const addCategory = (e)=>{
-        console.log(formData);
+    const editHomeSlide = (e)=>{
         e.preventDefault();
         const appendedArray = [...previews, ...uniqueArray];
         img_arr = [];
-        formData.append('name',formField.name);
-        formData.append('color',formField.color);
-        formData.append('images',appendedArray);
         formField.images = appendedArray;
-
-        if(formField.name!=="" && formField.color!=="" && previews.length!==0) {
+        if(previews.length !==0){
             setIsLoading(true);
-            const data = {
-                name: formField.name,
-                color: formField.color,
-                images: previews,
-              };
-            postData('/api/category/create',data).then(res =>{
-                context.setAlertBox({
-                        open: true,
-                        error: false,
-                        msg: 'The category is created!'});
-                setIsLoading(false);
-                context.fetchCategory();
-                context.fetchSubCategory();
-
-                deleteData("/api/imageUpload/deleteAllImages");
-                history('/category');
-            //     setFormField({
-            //         name: '',
-            //         color: '',
-            //         images: [],
-            //     });
-            //     history('/category')
-            //      context.setAlertBox({
-            //     open: true,
-            //     error: false,
-            //     msg: 'The product is created!'
-            // })
-
-            });
-            
+        
+           editData(`/api/homeBanner/${id}`, formField).then((res)=>{
+            context.setAlertBox({
+                open: true,
+                error: false,
+                msg: 'Slide updated successfully!'
+            })
+            setIsLoading(false);
+            deleteData("/api/imageUpload/deleteAllImages");
+            history('/homeBannerSlide');
+           })
         }
        else{
         context.setAlertBox({
@@ -201,7 +142,7 @@ const CategoryAdd = () => {
             error:true,
             msg:'Please fill all the details'
         })
-        // return false;
+        return false;
 
        }
 
@@ -223,12 +164,46 @@ const CategoryAdd = () => {
                 
         }
     },[imgFiles])
- 
+
+    useEffect(() =>{
+        context.setProgress(20);
+        fetchDataFromAPI("/api/imageUpload").then((res)=>{
+            res?.map((item)=>{
+                item?.images?.map((img)=>{
+                    deleteImages(`/api/homeBanner/deleteImage?img=${img}`).then((res)=>{
+                        deleteData("/api/imageUpload/deleteAllImages");
+                    })
+                })
+            })
+        })
+        fetchDataFromAPI(`/api/homeBanner/${id}`).then((res)=>{
+            setHomeSlide(res);
+            setFormField({
+                name: res.name,
+                color: res.color
+            });
+            setPreviews(res.images);          
+            context.setProgress(100);
+        });
+    }, [])
+    const removeImg= async(index, imgUrl)=>{
+        const imgIndex = previews.indexOf(imgUrl);
+        deleteImages(`/api/homeBanner/deleteImage?img=${imgUrl}`).then((res)=>{
+            context.setAlertBox({
+                open: true,
+                error: false,
+                msg: 'Image deleted successfully!'
+            })
+        })
+        if(imgIndex >-1){
+            previews.splice(index,1);
+        }
+    }
     return (
         <>
              <div className="right-content w-100">
                     <div className="card shadow border-0 w-100 flex-row p-4">
-                        <h5 className="mb-0">Add Category</h5>
+                        <h5 className="mb-0">Edit Slide Banner</h5>
                         <Breadcrumbs aria-label="breadcrumbs" className="ml-auto breadcrumbs_">
                             <StyleBreadrumb
                                 component="a"
@@ -238,38 +213,26 @@ const CategoryAdd = () => {
                                 />
                                 <StyleBreadrumb
                                 component="a"
-                                 href="/category"
-                                label="Category"
+                                label="Home Banner Slide"
                                 deleteIcon={<ExpandMoreIcon />}
                                 
                             />
                              <StyleBreadrumb
-                                label="Add Category"
+                                label="Edit Banner Slide"
                                 deleteIcon={<ExpandMoreIcon />}
                             />
                         </Breadcrumbs>
 
                     </div>
 
-                    <form className='form' onSubmit={addCategory}>
+                    <form className='form' onSubmit={editHomeSlide}>
                     <div className='row'>
-                        <div className='col-md-12'>
-                            <div className='card p-4 mt-0'>
-                                <div className='form-group'>
-                                    <h6>CATEGORY NAME</h6>
-                                    <input type='text' name='name' value={formField.name} onChange={changeInput}/>
-                                </div> 
-                                <div className='form-group'>
-                                    <h6>COLOR</h6>
-                                    <input type='text' name='color' value={formField.color} onChange={changeInput}/>
-                                </div>   
-                            </div>
-                           
+                        <div className='col-md-12'>                                           
                             <div className='card p-4 mt-0'>
                                 <div className='imageUploadSec'>
                                     <h5 className='mb-4'> Media And Published</h5>
                                     <div className='imgUploadBox d-flex align-items-center'>                             
-                                      {
+                                    {
                                         previews?.length!==0 && previews?.map((img, index)=>{
                                             return (
                                                 <div className='uploadBox' key={index}>
@@ -283,21 +246,21 @@ const CategoryAdd = () => {
                                         })
                                       }
                                         <div className='uploadBox'>
-                                            {
+                                           
+                                        {
                                                 uploading === true ?
                                                 <div className='progressBar text-center d-flex align-items-center flex-column'><CircularProgress/>
                                                     <span>Uploading...</span>
                                                  </div>
                                                  :
                                                  <>
-                                                    <input type='file' multiple onChange={(e) => onChangeFile(e, '/api/category/upload')} name='images'/>
+                                                    <input type='file' multiple onChange={(e) => onChangeFile(e, '/api/homeBanner/upload')} name='images'/>
                                                     <div className='info'>
                                                         <FaRegImages/>
                                                         <h5>Image Upload</h5>
                                                     </div>
                                                  </>
                                             }
-                                            
                                         </div>
                                     </div>
                                     <br/>
@@ -309,17 +272,6 @@ const CategoryAdd = () => {
                             
                         </div>
                     </div>
-
-                    {/* <div className='card p-4 mt-0'>
-                        <div className='imageUploadSec'>
-                            <h5 className='mb-4'> Media And Published</h5>
-                            <div className='imgUploadBox d-flex align-items-center'>  
-                            </div>
-                           
-                        </div>
-                        <br/>
-                        
-                    </div>  */}
                    
                     
                     </form>
@@ -328,4 +280,4 @@ const CategoryAdd = () => {
     )
 }
 
-export default CategoryAdd;
+export default HomeSlideEdit;

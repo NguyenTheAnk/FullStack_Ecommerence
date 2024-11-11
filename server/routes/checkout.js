@@ -138,7 +138,7 @@
 const { Orders } = require('../models/orders');
 const express = require('express');
 const router = express.Router();
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+// const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // Tạo đơn hàng trong cơ sở dữ liệu
 const createOrder = async (customer, sessionData) => {

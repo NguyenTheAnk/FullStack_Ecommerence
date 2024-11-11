@@ -4,13 +4,15 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv/config');
-const pLimit = require('p-limit');const authJwt = require('./helper/jwt');
+const pLimit = require('p-limit');
+// const authJwt = require('./helper/jwt');
 
 app.use(cors());
 app.options('*', cors())
 
 //middleware
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(express.json());
 // app.use(authJwt());
 
@@ -28,6 +30,7 @@ const productReviews = require('./routes/productReviews');
 const myList = require('./routes/myList');
 const orders = require('./routes/orders');
 const checkout = require('./routes/checkout');
+const homeBanner = require('./routes/homeBanner');
 
 app.use("/uploads", express.static("uploads"));
 app.use(`/api/category`,categoryRoutes);
@@ -43,6 +46,7 @@ app.use('/api/productReviews', productReviews);
 app.use('/api/my-list', myList);
 app.use('/api/orders', orders);
 app.use('/api/checkout', checkout);
+app.use('/api/homeBanner', homeBanner);
 
 
 

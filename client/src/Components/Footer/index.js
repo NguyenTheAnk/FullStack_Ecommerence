@@ -18,11 +18,11 @@ const Footer = () =>{
         })
     },[]);
     const groupedCategories = subCatData?.subCategoryList?.reduce((acc, item) => {
-        const categoryName = item.category.name;
+        const categoryName = item.category.name; // lấy tên của category
         if (!acc[categoryName]) {
             acc[categoryName] = [];
         }
-        acc[categoryName].push(item.subCat);
+        acc[categoryName].push(item.subCat); // thêm subCat vào category tương ứng
         return acc;
     }, {});
     return(
@@ -47,18 +47,24 @@ const Footer = () =>{
                     </div>
                 </div>
                 <div className="row mt-4 linksWrap">
-                    {Object.entries(groupedCategories).map(([categoryName, subCategories], index) => (
-                        <div className="col" key={index}>
-                            <h5>{categoryName}</h5>
-                            <ul>
-                                {subCategories.map((subCat, subIndex) => (
-                                    <li key={subIndex}>
-                                        <Link to="#">{subCat}</Link>
-                                    </li>
-                                ))}
-                            </ul>
+                    {groupedCategories && Object.entries(groupedCategories).length > 0 ? (
+                        Object.entries(groupedCategories).map(([categoryName, subCategories], index) => (
+                            <div className="col" key={index}>
+                                <h5>{categoryName}</h5>
+                                <ul>
+                                    {subCategories.map((subCat, subIndex) => (
+                                        <li key={subIndex}>
+                                            <Link to="#">{subCat}</Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="col">
+                            <p>No categories available.</p>
                         </div>
-                    ))}
+                    )}
                 </div>
                
                 <div className="copyright mt-3 pt-3 pb-3 d-flex">

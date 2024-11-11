@@ -27,6 +27,9 @@ import AddProductRAMS from './pages/Products/addProductRAMS';
 import AddProductWeight from './pages/Products/addProductWeight';
 import AddProductSize from './pages/Products/addProductSize';
 import Orders from './pages/Orders';
+import AddHomeSlide from './pages/HomeBannerSlide/addHomeSlide';
+import HomeBannerSlide from './pages/HomeBannerSlide/homeSlideList';
+import HomeSlideEdit from './pages/HomeBannerSlide/editSlide';
 // import {useLocation} from 'react-router-dom';
 
 const MyContext = createContext();
@@ -181,6 +184,9 @@ function App() {
             <Route path = "/productWeight/add" exact= {true} element= {<AddProductWeight/>}/>
             <Route path = "/productSize/add" exact= {true} element= {<AddProductSize/>}/>
             <Route path = "/orders/" exact= {true} element= {<Orders/>}/>
+            <Route path = "/homeBannerSlide/" exact= {true} element= {<HomeBannerSlide/>}/>
+            <Route path = "/homeBannerSlide/add" exact= {true} element= {<AddHomeSlide/>}/>
+            <Route path = "/homeBannerSlide/edit/:id" exact= {true} element= {<HomeSlideEdit/>}/>
           </Routes>
         </div>
       </div>

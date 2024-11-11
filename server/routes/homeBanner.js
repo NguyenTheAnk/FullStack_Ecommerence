@@ -1,4 +1,4 @@
-const {Category} = require('../models/category');
+const {HomeBannerSlide} = require('../models/homeBanner');
 const {ImageUpload} = require('../models/imageUpload');
 const express = require('express');
 const router = express.Router();
@@ -9,7 +9,7 @@ const fs = require('fs');
 
 
 var imagesArr = [];
-var categoryEditId;
+var homeSlideEditId;
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, 'uploads')
@@ -18,6 +18,7 @@ const storage = multer.diskStorage({
       cb(null, `${Date.now()}_${file.originalname}`);
     }
   })
+
   const upload = multer({ storage: storage })
 cloudinary.config({
     cloud_name: process.env.cloudinary_Config_Cloud_Name,
@@ -25,8 +26,6 @@ cloudinary.config({
     api_secret: process.env.cloudinary_Config_api_secret,
     secure: true
 });
-
-
 
 router.post(`/upload`, upload.array("images"), async (req, res) => {
     console.log(req.files);
@@ -56,37 +55,35 @@ router.post(`/upload`, upload.array("images"), async (req, res) => {
     }
 });
 
-
-
 router.get(`/`, async (req, res) => {
     try{
         const page = parseInt(req.query.page) || 1;
         const perPage = req.query.perPage;
-        const totalPosts = await Category.countDocuments();
+        const totalPosts = await HomeBannerSlide.countDocuments();
         const totalPages = Math.ceil(totalPosts / perPage);
 
         if(page > totalPages){
             return res.status(404).json({message: "No data found!"})
         }
 
-        let categoryList = [];
+        let homeBannerList = [];
         if(req.query.page !==undefined && req.query.perPage !==undefined){
-            categoryList = await Category.find()
+            homeBannerList = await HomeBannerSlide.find()
             .skip((page -1)* perPage)
             .limit(perPage)
             .exec();
         }
         else{
-            categoryList = await Category.find()
+            homeBannerList = await HomeBannerSlide.find()
             .exec();
         }
 
-        if(!categoryList){
+        if(!homeBannerList){
             res.status(500).json({success: false})
         }
 
         return res.status(200).json({
-            "categoryList": categoryList,
+            "homeBannerList": homeBannerList,
             "totalPages": totalPages,
             "page": page
         });
@@ -98,18 +95,18 @@ router.get(`/`, async (req, res) => {
 });
 
 router.get(`/:id`, async (req, res) => {
-    categoryEditId = req.params.id;
-    const category = await Category.findById(req.params.id);
+    homeSlideEditId = req.params.id;
+    const homeSlide = await HomeBannerSlide.findById(req.params.id);
 
-    if(!category){
-        res.status(500).json({message: 'The category with th given ID was not found'})
+    if(!homeSlide){
+        res.status(500).json({message: 'The home slide with th given ID was not found'})
     }
-    return res.status(200).send(category);
+    return res.status(200).send(homeSlide);
 })
 
 router.delete(`/:id`, async (req, res) => {
-    const category = await Category.findById(req.params.id);
-    const images = category.images;
+    const homeSlide = await HomeBannerSlide.findById(req.params.id);
+    const images = homeSlide.images;
     for(img of images){
         const imgUrl = img;
         const urlArr = imgUrl.split('/');
@@ -119,17 +116,17 @@ router.delete(`/:id`, async (req, res) => {
             cloudinary.uploader.destroy(imageName, (error, result) =>{});
         }
     }
-    const deletedCategory = await Category.findByIdAndDelete(req.params.id);
-    if(!deletedCategory){
+    const deletedHomeSlide = await HomeBannerSlide.findByIdAndDelete(req.params.id);
+    if(!deletedHomeSlide){
         res.status(404).json({
-            message: 'Category not found!',
+            message: 'Home Slide not found!',
             success: false
         })
     }
 
     res.status(200).json({
         success: true,
-        message: 'Category Deleted!'
+        message: 'Home Slide Deleted!'
     })
 });
 
@@ -142,46 +139,38 @@ router.post('/create', async (req, res) => {
             console.log(image);
         })
     })
-    if (req.body.name && req.body.name.trim() !== '') {
-        category = new Category({
-            name: req.body.name,
-            images: imagesArr,
-            color: req.body.color
-        });
-        category = await category.save();
-        if(!category){
-            res.status(500).json({
-                error: err,
-                success: false
-            })
-        }
-        imagesArr=[];
-        res.status(201).json(category);
-    }else{
-        return res.status(400).json({ error: 'Name is required' });
+    newEntry = new HomeBannerSlide({
+        images: imagesArr
+    });
+    newEntry = await newEntry.save();
+    if(!newEntry){
+        res.status(500).json({
+            error: err,
+            success: false
+        })
     }
-  
+   
+    imagesArr=[];
+    res.status(201).json(newEntry);
 });
 
 
 router.put('/:id', async (req, res) => {
 
 
-    const category = await Category.findByIdAndUpdate(
+    const homeSlide = await HomeBannerSlide.findByIdAndUpdate(
         req.params.id,{
-              name: req.body.name,
-            images: imagesArr,
-            color: req.body.color
+            images: imagesArr
         },
         {new: true}
         )
-        if(!category) {
+        if(!homeSlide) {
             return res.status(500).json({
-                message: 'Category cannot be updated',
+                message: 'Home Slide cannot be updated',
                 success: false
             })
         }
-        res.send(category);
+        res.send(homeSlide);
 });
 router.delete('/deleteImage', async(req, res)=>{
     const imgUrl = req.query.img;

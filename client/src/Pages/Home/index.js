@@ -27,6 +27,7 @@ const Home = () =>{
     const [electronicsData, setElectronicData]= useState([]);
     const [selectedCat, setSelectedCat]= useState([]);
     const [filterData, setFilterData]= useState([]);
+    const [homeSlides,setHomeSlides] = useState([]);
     const [value, setValue] = React.useState(0);
     const context = useContext(MyContext);
     const handleChange = (event, newValue) => {
@@ -50,6 +51,9 @@ const Home = () =>{
         fetchDataFromAPI("/api/products/featured").then((res)=>{
             setElectronicData(res);
             });
+            fetchDataFromAPI("/api/homeBanner").then((res)=>{
+                setHomeSlides(res);
+                });     
     
     
     },[]);
@@ -63,7 +67,10 @@ const Home = () =>{
     },[selectedCat]);
     return (
         <>
-                <HomeBanner/>
+        {
+            homeSlides?.homeBannerList?.length!==0 && <HomeBanner data={homeSlides?.homeBannerList}/>
+        }
+                
                 {
                     catData?.categoryList?.length!==0 && <HomeCat catData ={catData}/>                  
                 }

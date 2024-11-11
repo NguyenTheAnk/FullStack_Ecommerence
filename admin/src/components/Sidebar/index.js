@@ -87,6 +87,20 @@ const Sidebar = () => {
                                 </Button>
                         </NavLink>
                     </li>
+                    <li> 
+                            <Button className={`w-100 ${activeTab===4 && isToggleSubmenu===true ? 'active' : ''}`} onClick={()=> isOpenSubmenu(4)}> 
+                                
+                                    <span className='icon'><BiSolidCategoryAlt/></span>Home Banner Slides
+                                    <span className='arrow'><FaAngleRight/></span>
+                            </Button>
+                            <div className={`submenuWrapper ${activeTab===4 && isToggleSubmenu===true ? 'colapse' : 'colapsed'}`}>
+                                <ul className='submenu'>                                 
+                                    <li><Link to="/homeBannerSlide/add">Add Home Banner Slide</Link></li>
+                                    <li><Link to="/homeBannerSlide">Home Slides List</Link></li>
+                                </ul>
+                            </div>
+                           
+                    </li>
                     {/* <li> 
                         <Link to="/">
                         <Button className={`w-100 ${activeTab===3 ? 'active' : ''}`} onClick={()=> isOpenSubmenu(3)}> 

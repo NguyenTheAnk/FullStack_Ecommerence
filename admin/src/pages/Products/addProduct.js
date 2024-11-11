@@ -12,7 +12,7 @@ import { FaRegImages } from "react-icons/fa";
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
-import {  deleteData, deleteImages, fetchDataFromAPI, postData } from '../../utils/api';
+import {  deleteData, deleteImages, fetchDataFromAPI, postData, postDataImg } from '../../utils/api';
 import { MyContext } from '../../App';
 import { IoCloseSharp } from "react-icons/io5";
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -416,7 +416,7 @@ const onChangeFile= async(e, apiEndPoint)=>{
         console.log(error);
     }
 
-    postData(apiEndPoint, formData).then((res)=>{
+    postDataImg(apiEndPoint, formData).then((res)=>{
         fetchDataFromAPI("/api/imageUpload").then((response)=>{
             if(response!==undefined && response!==null && response!== "" && response.length!== 0){
                 response.length!==0 && response.map((item)=>{

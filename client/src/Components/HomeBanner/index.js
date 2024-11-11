@@ -8,7 +8,7 @@ import slide3  from '../../assets/images/slideBanner3.jpg'
 
 
 
-const HomeBanner =() => {
+const HomeBanner =(props) => {
 
     return (
         <div className="container mt-3">
@@ -27,21 +27,19 @@ const HomeBanner =() => {
                     modules={[Navigation, Autoplay]}
                     className="mySwiper"
                 >
-                    <SwiperSlide>
-                        <div className="item">
-                            <img src={slide1} className="w-100 " alt="" />
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <div className="item">
-                            <img src={slide2} className="w-100" alt="" />
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <div className="item">
-                            <img src={slide3} className="w-100" alt="" />
-                        </div>
-                    </SwiperSlide>
+                    {
+                        props?.data?.length!==0 && props?.data?.map((item, index)=>{
+                            return(
+                                <SwiperSlide key={index}>
+                                    <div className="item">
+                                        <img src={item?.images[0]} className="w-100 " alt="" />
+                                    </div>
+                                </SwiperSlide>
+                            )
+                        })
+                    }
+                   
+                    
 
                 </Swiper>
             </div>

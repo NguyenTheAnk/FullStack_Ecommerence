@@ -25,7 +25,7 @@ const Navigation = (props) =>{
                             <div className="catWrapper">
                                 <Button className='allCatTab align-items-center' onClick={() => setisopenSidebarVal(!isopenSidebarVal)}>
                                     <span className="icon1 mr-2"><IoIosMenu/></span>
-                                    <span class="text">CATEGORY</span>
+                                    <span class="text">ALL CATEGORY</span>
                                     <span className="icon2 ml-2"><FaAngleDown/></span>
                                 </Button>
 
