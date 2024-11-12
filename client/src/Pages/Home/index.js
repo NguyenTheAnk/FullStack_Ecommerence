@@ -183,7 +183,7 @@ const Home = () =>{
                                 </div>
                                  <div className="d-flex align-items-center mt-4">
                                     <div className="info w-75">
-                                        <h3 className="mb-0 hd">ELECTRONICS</h3>    
+                                        <h3 className="mb-0 hd">NEWS ARRIVAL</h3>    
                                         <p className="text-light text-sml mb-0">Don't miss out on current offers until the end of December</p>
                                     </div>
 

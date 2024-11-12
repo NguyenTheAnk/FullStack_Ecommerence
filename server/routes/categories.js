@@ -186,6 +186,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/deleteImage', async(req, res)=>{
     const imgUrl = req.query.img;
     const urlArr = imgUrl.split('/');
+    const image = urlArr[urlArr.length - 1];
     const imageName = image.split('.')[0];
     const response = await cloudinary.uploader.destroy(imageName, (error, result)=>{
 

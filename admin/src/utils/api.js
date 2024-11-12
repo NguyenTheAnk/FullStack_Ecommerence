@@ -76,7 +76,10 @@ export const fetchDataFromAPI = async (url) => {
         return error;
     }
 };
-
+// export const uploadImage = async(url, formData)=>{
+//     const {res} = await axios.post("http://localhost:4000" + url, formData);
+//     return res;
+// }
 // Hàm gửi dữ liệu lên API (POST request)
 export const postDataImg = async (url, formData) => {
     try {

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Rating from '@mui/material/Rating';
 import { IoMdClose } from "react-icons/io";
 import Button from '@mui/material/Button';
@@ -11,6 +11,20 @@ const MyList = () => {
     const context = useContext(MyContext);
     const [myListData, setMyListData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLogin, setIsLogin] = useState(false);
+    const history = useNavigate();
+    useEffect(()=>{
+        const token = localStorage.getItem("token");
+        if(token!==null && token!==undefined && token!==""){
+          setIsLogin(true);
+        }else{
+         history("/signIn");
+        }
+        const user = JSON.parse(localStorage.getItem("user"));
+        fetchDataFromAPI(`/api/my-list?userId=${user?.userId}`).then((res)=>{
+            setMyListData(res);
+        })
+      },[]);
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));

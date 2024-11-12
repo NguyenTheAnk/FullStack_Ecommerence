@@ -10,6 +10,29 @@ export const fetchDataFromAPI = async(url)=> {
     }
 }
 
+// export const uploadImage = async(url, formData)=>{
+//     const {res} = await axios.post("http://localhost:4000" + url, formData);
+//     return res;
+// }
+export const postDataImg = async (url, formData) => {
+    try {
+        const response = await fetch("http://localhost:4000" + url, {
+            method: "POST",
+            body: formData // Bỏ Content-Type để fetch tự động thêm
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        } else {
+            const errorData = await response.json();
+            return errorData;
+        }
+    } catch (error) {
+        console.error("Request failed:", error);
+        return { error: true, msg: error.message };
+    }
+};
 export const postData = async(url, formData)=>{
     try{
 

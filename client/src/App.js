@@ -20,6 +20,7 @@ import Checkout from "./Pages/Checkout";
 import Orders from "./Pages/Orders";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import SearchPage from "./Pages/Search";
+import MyAccount from "./Pages/MyAccount";
 const MyContext = createContext();
 
 function App() {
@@ -199,6 +200,7 @@ function App() {
             <Route path="/checkout" exact = {true} element= {<Checkout/>} />
             <Route path="/orders" exact = {true} element= {<Orders/>} />
             <Route path="/search" exact = {true} element= {<SearchPage/>} />
+            <Route path="/my-account" exact = {true} element= {<MyAccount/>} />
           </Routes>
           {
           isHeaderFooterShow === true && <Footer/>
