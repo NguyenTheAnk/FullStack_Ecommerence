@@ -57,8 +57,7 @@ const Listing = () => {
     const filterByPrice = (price,subCatId) => {
         fetchDataFromAPI(`/api/products?minPrice=${price[0]}&maxPrice=${price[1]}&subCatId=${subCatId}`)
             .then((res) => {
-                setProductsData(res.productList);
-                console.log(res.productList);
+                setProductsData(res);
     });
 }
     const indexOfLastProduct = currentPage * itemsPerPage;

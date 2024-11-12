@@ -36,7 +36,9 @@ const Header = () =>{
     }
     useEffect(()=>{
         fetchDataFromAPI("/api/category/").then((res)=>{
-             setCatData(res);
+             setTimeout(()=>{
+                setCatData(res);
+             },3000)
             
 
         });

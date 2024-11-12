@@ -47,13 +47,15 @@ body{font-family: "Lato", sans-serif; font-size: 14px;color: rgba(0,0,0,0.8);ove
   .headerWrapper .header .part2 .countryDrop span.ml-auto svg{opacity: 0.7;}
 
 .headerSearch{width: 58%; height: 60px; background: #f3f4f7; padding: 5px; position: relative; border-radius: 5px; border: 1px solid rgba(0,0,0,0.1);}
- .headerSearch input{background: transparent !important; outline: none !important; font-size: 18px; color: rgba(0,0,0,0.7);
+ .headerSearch input{background: transparent !important; outline: none !important; font-size: 15px; color: rgba(0,0,0,0.7);
 width: 100%; height: 45px; border: 0px !important ; padding: 0px 20px !important;}
 
 .headerSearch input::-webkit-input-placeholder{color: rgba(0,0,0,0.6);}
 
  .headerSearch button{position: absolute; top: 10px; right: 10px; z-index: 100; min-width: 40px !important; height: 40px !important; width: 40px !important; 
   border-radius: 50% !important; color: #000;}
+
+  .headerSearch button .css-1idz92c-MuiCircularProgress-svg{width: 25px !important; height: 25px !important; color: #007bff !important;}
 
   .headerSearch button svg{font-size: 25px; opacity: 0.8;}
 

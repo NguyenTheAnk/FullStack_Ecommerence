@@ -13,7 +13,9 @@ const Navigation = (props) =>{
     const [subCatData, setSubCatData]= useState([]);
     useEffect(()=>{
         fetchDataFromAPI("/api/subCat/").then((res)=>{
-            setSubCatData(res);
+            setTimeout(()=>{
+                setSubCatData(res);
+            },3000)
         });
      
      },[]);

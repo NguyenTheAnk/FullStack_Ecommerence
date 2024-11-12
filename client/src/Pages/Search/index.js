@@ -8,7 +8,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState, useEffect } from 'react';
 import ProductItem from "../../Components/ProductItem";
-import Pagination from '@mui/material/Pagination';
+// import Pagination from '@mui/material/Pagination';
 import { fetchDataFromAPI } from "../../utils/api";
 import { useParams } from "react-router-dom";
 import { MyContext } from "../../App";
@@ -18,7 +18,7 @@ const SearchPage = () => {
     const [productView, setProductView] = useState('four');
     const [productsData, setProductsData] = useState([]);
     const [itemsPerRow, setItemsPerRow] = useState(4);
-    const [currentPage, setCurrentPage] = useState(1); 
+    // const [currentPage, setCurrentPage] = useState(1); 
     const [itemsPerPage, setItemsPerPage] = useState(8);
     const openDropdown = Boolean(anchorEl);
     const { subCatId } = useParams();
@@ -35,24 +35,33 @@ const SearchPage = () => {
         }
     };
     const context = useContext(MyContext);
+    useEffect(()=>{
+        window.scrollTo(0, 0);
+       setTimeout(()=>{
+            setProductsData(context.searchData);
+       },2000)
+    },[context.searchData])
     useEffect(() => {
         const apiUrl = subCatId
             ? `/api/products?subCatId=${subCatId}`
             : `/api/products?catId=${catId}`; 
         fetchDataFromAPI(apiUrl).then((res) => {
-            setProductsData(res);
+            setTimeout(()=>{
+                setProductsData(res);
+               },1000)
+            
         });
         // setProductsData(context.productData);
     }, [catId, subCatId]);
 
     const filterData = (subCatId) => {
         fetchDataFromAPI(`/api/products?subCatId=${subCatId}`).then((res) => {
-            setProductsData(res);
+            setProductsData(res.productList);
         });
     };
     const filterByBrand = (brand) => {
         fetchDataFromAPI(`/api/products?brand=${brand}`).then((res) => {
-            setProductsData(res);
+            setProductsData(res.productList);
         });
     };    
 
@@ -60,14 +69,13 @@ const SearchPage = () => {
         fetchDataFromAPI(`/api/products?minPrice=${price[0]}&maxPrice=${price[1]}&subCatId=${subCatId}`)
             .then((res) => {
                 setProductsData(res.productList);
-                console.log(res.productList);
     });
 }
-    const indexOfLastProduct = currentPage * itemsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-    const currentProducts = productsData?.productList?.slice(indexOfFirstProduct, indexOfLastProduct);
+    // const indexOfLastProduct = currentPage * itemsPerPage;
+    // const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+    // const currentProducts = productsData?.productList?.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    const totalPages = Math.ceil(productsData?.productList?.length / itemsPerPage);
+    // const totalPages = Math.ceil(productsData?.productList?.length / itemsPerPage);
 
     return (
         <>
@@ -107,10 +115,10 @@ const SearchPage = () => {
 
                             <div className="product_row w-100 mt-4" style={{ display: 'flex', flexWrap: 'wrap' }}>
                                 {
-                                    currentProducts?.length > 0 && currentProducts.map((item, index) => {
+                                    productsData?.length > 0 && productsData?.map((item, index) => {
                                         return (
                                             <div key={index} style={{ width: `${(100 / itemsPerRow).toFixed(2)}%`, boxSizing: 'border-box' }}>
-                                                <ProductItem item={item} />
+                                                <ProductItem itemView= {productView} item={item} />
                                             </div>
                                         );
                                     })
@@ -118,7 +126,7 @@ const SearchPage = () => {
                             </div>
 
                             <div className="d-flex align-items-center justify-content-center mt-5 tableFooter">
-                                <Pagination 
+                                {/* <Pagination 
                                     count={totalPages} 
                                     page={currentPage}
                                     onChange={(event, value) => setCurrentPage(value)}
@@ -126,7 +134,7 @@ const SearchPage = () => {
                                     className="pagination" 
                                     showFirstButton 
                                     showLastButton 
-                                />
+                                /> */}
                             </div>
                         </div>
                     </div>
