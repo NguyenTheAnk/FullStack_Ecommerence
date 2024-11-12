@@ -167,7 +167,7 @@ const ProductItem =(props)=>{
             </div>
 
             <div className="info">
-                <Link to={'/product/1'}><h4>{props?.item?.name?.substr(0,30) +'...'}</h4></Link>
+                <Link to={`/product/${props?.itemView==='recentlyView' ? props?.item?.prodId : props?.item?.id}`}><h4>{props?.item?.name?.substr(0,30) +'...'}</h4></Link>
                 <span className="text-success d-block"> IN STOCK</span>
                 <Rating className="mt-2 mb-2" name="read-only" value={props?.item?.rating} readOnly size="small" precision={0.5}/>
                 <div className="d-flex">

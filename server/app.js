@@ -31,6 +31,9 @@ const myList = require('./routes/myList');
 const orders = require('./routes/orders');
 const checkout = require('./routes/checkout');
 const homeBanner = require('./routes/homeBanner');
+const search = require('./routes/search');
+
+
 
 app.use("/uploads", express.static("uploads"));
 app.use(`/api/category`,categoryRoutes);
@@ -47,6 +50,7 @@ app.use('/api/my-list', myList);
 app.use('/api/orders', orders);
 app.use('/api/checkout', checkout);
 app.use('/api/homeBanner', homeBanner);
+app.use('/api/search', search);
 
 
 

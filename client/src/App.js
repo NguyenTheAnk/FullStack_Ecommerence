@@ -19,6 +19,7 @@ import MyList from "./Pages/MyList";
 import Checkout from "./Pages/Checkout";
 import Orders from "./Pages/Orders";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import SearchPage from "./Pages/Search";
 const MyContext = createContext();
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
 
   const [addingInCart, setAddingInCart] = useState(false);
   const [cartData, setCartData] = useState();
+  const [searchData, setSearchData] = useState([]);
   const [alertBox, setAlertBox] = useState({
     msg:'',
     error: false,
@@ -163,7 +165,9 @@ function App() {
     setAddingInCart,
     cartData,
     setCartData,
-    getCartData
+    getCartData,
+    searchData, 
+    setSearchData
   }
 
   return (
@@ -194,6 +198,7 @@ function App() {
             <Route path="/my-list" exact = {true} element= {<MyList/>} />
             <Route path="/checkout" exact = {true} element= {<Checkout/>} />
             <Route path="/orders" exact = {true} element= {<Orders/>} />
+            <Route path="/search" exact = {true} element= {<SearchPage/>} />
           </Routes>
           {
           isHeaderFooterShow === true && <Footer/>

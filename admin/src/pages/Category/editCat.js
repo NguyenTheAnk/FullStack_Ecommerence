@@ -223,7 +223,6 @@ const EditCategory = () => {
                                 deleteIcon={<ExpandMoreIcon />}
                             />
                         </Breadcrumbs>
-
                     </div>
 
                     <form className='form' onSubmit={editCategory}>
