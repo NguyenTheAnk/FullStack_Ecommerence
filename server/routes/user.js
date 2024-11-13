@@ -110,44 +110,112 @@ router.post(`/signIn`,async (req,res)=>{
     }
 });
 
-router.post('/changePassword/:id', async (req, res) => {
-    const {name, phone, email, password, newPass, images} = req.body;
+// router.post('/changePassword/:id', async (req, res) => {
+//     const {name, phone, email, password, newPass, images} = req.body;
 
-    const existingUser = await User.findOne({email: email});
+//     const existingUser = await User.findOne({email: email});
 
-    if(!existingUser){
-        return res.status(404).json({error: true, msg: "User not found!"});
-    }
-    const matchPassword = await bcrypt.compare(password, existingUser.password);
-    if(!matchPassword){
-        return res.status(400).json({error: true, msg: "Current password wrong!"});
-    }else{
-        let newPassword;
-        if(newPass){
-            newPassword = bcrypt.hashSync(newPass, 10);
-        }else{
-            newPassword = existingUser.passwordHash;
-        }
+//     if(!existingUser){
+//         return res.status(404).json({error: true, msg: "User not found!"});
+//     }
+//     const matchPassword = await bcrypt.compare(password, existingUser.password);
+//     if(!matchPassword){
+//         return res.status(400).json({error: true, msg: "Current password wrong!"});
+//     }else{
+//         let newPassword;
+//         if(newPass){
+//             newPassword = bcrypt.hashSync(newPass, 10);
+//         }else{
+//             newPassword = existingUser.passwordHash;
+//         }
     
+//         const user = await User.findByIdAndUpdate(
+//             req.params.id,
+//             {
+//                 name: name,
+//                 phone: phone,
+//                 email: email,
+//                 password:  newPassword,
+//                 images: images
+//             },
+//             {new: true}
+//         )
+//         if(!user){
+//             res.status(400).send('The user cannot be updated!');
+//         }
+//         res.send(user);
+//     }
+   
+// });
+router.put('/changePassword/:id', async (req, res) => {
+    try {
+        const {name, phone, email, password, newPass, images} = req.body;
+        console.log('Request body:', req.body);  // Log toàn bộ request body
+        console.log('Old password:', password);  // Log old password
+        console.log('New password:', newPass);   // Log new password
+        // Validate input
+        if (!email || !password || !newPass) {
+            return res.status(400).json({
+                error: true,
+                msg: "Missing required fields"
+            });
+        }
+
+        const existingUser = await User.findOne({email: email});
+
+        if (!existingUser) {
+            return res.status(404).json({
+                error: true,
+                msg: "User not found!"
+            });
+        }
+
+        const matchPassword = await bcrypt.compare(password, existingUser.password);
+        
+        if (!matchPassword) {
+            return res.status(400).json({
+                error: true,
+                msg: "Current password is incorrect!"
+            });
+        }
+
+        // Hash new password
+        const newPassword = await bcrypt.hash(newPass, 10);
+
+        // Update user
         const user = await User.findByIdAndUpdate(
             req.params.id,
             {
                 name: name,
                 phone: phone,
                 email: email,
-                password:  newPassword,
-                images: images
+                password: newPassword,
+                images: images || existingUser.images // Keep existing images if none provided
             },
             {new: true}
-        )
-        if(!user){
-            res.status(400).send('The user cannot be updated!');
+        );
+        
+        if (!user) {
+            return res.status(400).json({
+                error: true,
+                msg: 'Failed to update user!'
+            });
         }
-        res.send(user);
-    }
-   
-});
 
+        res.status(200).json({
+            error: false,
+            msg: 'Password changed successfully',
+            user
+        });
+
+    } catch (error) {
+        console.error('Change password error:', error);
+        res.status(500).json({
+            error: true,
+            msg: "Server error occurred"
+        });
+    }
+});
 router.get(`/`, async(req,res)=>{
     const userList = await User.find();
     if(!userList){
@@ -255,4 +323,6 @@ router.delete('/deleteImage', async(req, res)=>{
         res.status(200).send(response);
     }
 })
+
+
 module.exports = router;

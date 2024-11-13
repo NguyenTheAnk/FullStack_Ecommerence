@@ -73,6 +73,10 @@ const productSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    location:{
+        type: String,
+       require: true
+    },
     dateCreated: {
         type: Date,
         default: Date.now,

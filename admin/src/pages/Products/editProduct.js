@@ -16,7 +16,7 @@ import { deleteData, deleteImages, editData, fetchDataFromAPI, postData } from '
 import { MyContext } from '../../App';
 import { useParams } from "react-router-dom";
 import { IoCloseSharp } from 'react-icons/io5';
-
+import CountryDropdown from '../../components/CountryDropdown';
 
 const StyleBreadrumb= styled(Chip)(({theme})=>{
     const backgroundColor = theme.palette.mode ==='light' 
@@ -67,6 +67,8 @@ const EditProduct = () => {
     const [productRAMSData, setProductRAMSData] = useState([]);
     const [productWEIGHTData, setProductWEIGHTData] = useState([]);
     const [productSIZEData, setProductSIZEData] = useState([]);
+
+    const [selectedLocation, setSelectedLocation] = useState("");
     const formData = new FormData();
     const history = useNavigate();
     let {id} = useParams();
@@ -488,6 +490,10 @@ const onChangeFile= async(e, apiEndPoint)=>{
         })
     });
 }
+
+const handleChangeLocation=(e)=>{
+    setSelectedLocation(e.target.value);
+}
 const removeImg= async(index, imgUrl)=>{
     const imgIndex = previews.indexOf(imgUrl);
     deleteImages(`/api/products/deleteImage?img=${imgUrl}`).then((res)=>{
@@ -744,6 +750,35 @@ const removeImg= async(index, imgUrl)=>{
                                                 />
                                         </div>
                                     </div>                   
+                                </div>
+                                <div className='row'>
+                                    <div className='col-md-4'>
+                                        <div className='form-group'>
+                                            <h6>LOCATION</h6>
+                                            {
+                                                context.countryList?.length !==0 && <CountryDropdown countryList={context.countryList}/>
+                                            }
+                                                    {/* <Select
+                                                    displayEmpty                                           
+                                                    MenuProps={MenuProps}
+                                                    value={selectedLocation}
+                                                    onChange={handleChangeLocation}
+                                                    className='w-100'
+                                                    >
+                                                        <MenuItem className='text-capitalize' value={null} onClick={(e)=>e.stopPropagation()}>
+                                                            <input type='text'/>
+                                                        </MenuItem>
+                                                    {
+                                                        countryList?.length!==0 && countryList?.map((item, index)=>{
+                                                            return(
+                                                                <MenuItem className='text-capitalize' value={item.country} key={index}>{item.country}</MenuItem>
+                                                            )
+                                                        })
+                                                    }
+                                                
+                                                </Select> */}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

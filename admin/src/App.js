@@ -31,11 +31,12 @@ import AddHomeSlide from './pages/HomeBannerSlide/addHomeSlide';
 import HomeBannerSlide from './pages/HomeBannerSlide/homeSlideList';
 import HomeSlideEdit from './pages/HomeBannerSlide/editSlide';
 // import {useLocation} from 'react-router-dom';
-
+import axios from "axios";
 const MyContext = createContext();
 
 function App() {
-
+  const [countryList, setCountryList] = useState([]);
+  const [selectedCountry, setselectedCountry] = useState('');
   const[isToggleSidebar, setIsToggleSidebar] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [isHideSidebarAndHeader, setIsHideSidebarAndHeader] = useState(false);
@@ -55,7 +56,15 @@ function App() {
     open:false
   });
 
-
+  const getCountry = async(url)=>{
+    const responsive = await axios.get(url).then((res)=>{
+      setCountryList(res.data.data)
+      console.log(res.data.data)
+    });
+  }
+  useEffect(() => {
+    getCountry("https://countriesnow.space/api/v0.1/countries/");
+  }, []);
   useEffect(() =>{
     if(themeMode === true){
       document.body.classList.remove('dark');
@@ -100,6 +109,9 @@ function App() {
   })
   };
   const values= {
+    countryList,
+    setselectedCountry,
+    selectedCountry,
     isToggleSidebar,
     setIsToggleSidebar,
     isLogin,
