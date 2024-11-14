@@ -72,8 +72,15 @@ function App() {
     fetchDataFromAPI(`/api/cart`).then((res)=>{
       setCartData(res);
     })
+
   }, []);
 
+  useEffect(()=>{
+    const location = localStorage.getItem('location');
+    if(location !==null && location !== undefined && location !== ""){
+      setselectedCountry(location);
+    }
+  },[])
   useEffect(()=>{
     isOpenProductModal.open === true &&
     fetchDataFromAPI(`/api/products/${isOpenProductModal.id}`).then((res)=>{

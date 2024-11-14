@@ -11,33 +11,31 @@ const HomeCat = (props) =>{
         
         <section className="homeCat">
             <div className="container sidebarNav">
-                <h3 className="mb-3 hd">FEATURED CATEGORY</h3>
+                <h3 className="mb-3 hd">FEATURED CATEGORIES</h3>
             <Swiper 
-                    slidesPerView ={10}
+                    slidesPerView ={8}
                     spaceBetween = {10}
                     navigation= {true}
                     slidesPerGroup={3}
                     modules={[Navigation]}
                     className="mySwiper"
-                    >
+                        >
                         {
                             
                             props.catData?.categoryList?.length!==0 && props.catData?.categoryList?.map((cat, index)=>{
                                 return(
                                 <SwiperSlide key={index}>
                                     <Link to={`/cat/${cat.id}`}>
-                                    <div className="item text-center cursor" style={{background: cat.color}}>
-                                        <img src={cat.images[0]} alt=''/>
+                                        <div className="item text-center cursor" style={{background: cat.color}}>
+                                            <img src={cat.images[0]} alt=''/>                                      
+                                        </div>
                                         <h6 >{cat.name}</h6>
-                                    </div>
                                     </Link>
                                 </SwiperSlide>   
                                 
                                 )
                             })
-                        }
-                           
-                
+                        }              
             </Swiper>       
             </div>
         </section>

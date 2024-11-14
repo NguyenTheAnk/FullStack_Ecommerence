@@ -12,7 +12,7 @@ import { FaRegImages } from "react-icons/fa";
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
-import { deleteData, deleteImages, editData, fetchDataFromAPI, postData } from '../../utils/api';
+import { deleteData, deleteImages, editData, fetchDataFromAPI, uploadImage } from '../../utils/api';
 import { MyContext } from '../../App';
 import { useParams } from "react-router-dom";
 import { IoCloseSharp } from 'react-icons/io5';
@@ -91,10 +91,12 @@ const EditProduct = () => {
         productSize:[],
         rating: 0,
         isFeatured: null,
+        location: ""
     });
     useEffect(() => {
         context.setIsHideSidebarAndHeader(false);
         window.scrollTo(0, 0);
+        context.setselectedCountry("");
         setCatData(context.catData);
         setSubCatData(context.subCatData);   
         fetchDataFromAPI("/api/imageUpload").then((res)=>{
@@ -127,7 +129,10 @@ const EditProduct = () => {
                 productRAMS:res.productRAMS,
                 productWeight:res.productWeight,
                 productSize:res.productSize,
+                location: res.location
         });
+
+        context.setselectedCountry(res.location);
         setRatingValue(res.rating);
         setCategoryVal(res.category);
         setSubCategoryVal(res.subCat);
@@ -200,13 +205,6 @@ const EditProduct = () => {
     formField.subCatId = event.target.value;
   };
   const handleChangeProductRams = (event) => {
-    // setProductRAMS(event.target.value);
-    // setFormField(()=> (
-    //     {
-    //         ...formField,
-    //         productRAMS: event.target.value
-    //     }
-    // ))
     const {
         target: { value },
       } = event;
@@ -217,35 +215,19 @@ const EditProduct = () => {
       formField.productRAMS = value;
   };
   const handleChangeProductSize = (event) => {
-    // setProductSIZE(event.target.value);
-    // setFormField(()=> (
-    //     {
-    //         ...formField,
-    //         productSize: event.target.value
-    //     }
-    // ))
     const {
         target: { value },
       } = event;
       setProductSIZE(
-        // On autofill we get a stringified value.
         typeof value === 'string' ? value.split(',') : value,
       );
       formField.productSize = value;
   };
   const handleChangeProductWeight = (event) => {
-    // setProductWEIGHT(event.target.value);
-    // setFormField(()=> (
-    //     {
-    //         ...formField,
-    //         productWeight: event.target.value
-    //     }
-    // ))
     const {
         target: { value },
       } = event;
       setProductWEIGHT(
-        // On autofill we get a stringified value.
         typeof value === 'string' ? value.split(',') : value,
       );
       formField.productWeight = value;
@@ -273,6 +255,7 @@ const changeInput= (e) => {
 const editProduct = (e)=>{
     e.preventDefault();
     const appendedArray = [...previews, ...uniqueArray];
+
     img_arr = [];
     formData.append('name',formField.name);
     formData.append('description',formField.description);
@@ -290,6 +273,7 @@ const editProduct = (e)=>{
     formData.append('productRAMS',formField.productRAMS);
     formData.append('productSize',formField.productSize);
     formData.append('productWeight',formField.productWeight);
+    formData.append('location',formField.location);
     // formData.append('images',appendedArray);
     formField.images = appendedArray;
     
@@ -320,42 +304,6 @@ const editProduct = (e)=>{
             })
             return false;
     }
-    // if(formField.discount===null)
-    //     {
-    //         context.setAlertBox({
-    //             open:true,
-    //             error:true,
-    //             msg:'Please add product discount!'
-    //         })
-    //         return false;
-    // }
-    // if(formField.productRAMS==="")
-    //     {
-    //         context.setAlertBox({
-    //             open:true,
-    //             error:true,
-    //             msg:'Please select product RAMS!'
-    //         })
-    //         return false;
-    // }
-    // if(formField.productSIZE==="")
-    //     {
-    //         context.setAlertBox({
-    //             open:true,
-    //             error:true,
-    //             msg:'Please select product SIZES!'
-    //         })
-    //         return false;
-    // }
-    // if(formField.productWEIGHT==="")
-    //     {
-    //         context.setAlertBox({
-    //             open:true,
-    //             error:true,
-    //             msg:'Please select product WEIGHT!'
-    //         })
-    //         return false;
-    // }
     if(formField.category==="")
         {
             context.setAlertBox({
@@ -419,6 +367,15 @@ const editProduct = (e)=>{
                 })
                 return false;
             } 
+            if(formField.location===0)
+                {
+                    context.setAlertBox({
+                        open:true,
+                        error:true,
+                        msg:'Please select product location!'
+                    })
+                    return false;
+                } 
     setIsLoading(true);
     editData(`/api/products/${id}`, formField).then((res)=>{
         context.setAlertBox({
@@ -434,11 +391,15 @@ const editProduct = (e)=>{
     
 }
 
+useEffect(()=>{
+    formField.location =context.selectedCountry;
+},[context.selectedCountry])
 const onChangeFile= async(e, apiEndPoint)=>{
     try{
         // const imgArr = [];
         const files = e.target.files;
         setUploading(true);
+        
         for(var i=0; i < files.length; i++){
             
             if(files[i] && (files[i].type=== 'image/jpeg' || files[i].type==='image/jpg' || files[i].type==='image/png' || files[i].type==='image/webp')){
@@ -457,7 +418,7 @@ const onChangeFile= async(e, apiEndPoint)=>{
         console.log(error);
     }
 
-    postData(apiEndPoint, formData).then((res)=>{
+    uploadImage(apiEndPoint, formData).then((res)=>{
         fetchDataFromAPI("/api/imageUpload").then((response)=>{
             if(response!==undefined && response!==null && response!== "" && response.length!== 0){
                 response.length!==0 && response.map((item)=>{
@@ -518,12 +479,14 @@ const removeImg= async(index, imgUrl)=>{
                                 href="/"
                                 label="Home"
                                 icon={<HomeIcon fontSize="small" />}
+                                style={{ cursor: "pointer" }}
                                 />
                                 <StyleBreadrumb
                                 component="a"
                                  href="/products"
                                 label="Products"
                                 deleteIcon={<ExpandMoreIcon />}
+                                style={{ cursor: "pointer" }}
                                 
                             />
                              <StyleBreadrumb
@@ -558,7 +521,7 @@ const removeImg= async(index, imgUrl)=>{
                                             className='w-100'                                           
                                             >
                                             <MenuItem value="">
-                                                <em value={null}>None</em>
+                                                <em value={null}>None</em>  
                                             </MenuItem>
                                             {
                                                 context.catData?.categoryList?.length!==0 && context.catData?.categoryList?.map((cat,index)=>{
@@ -756,27 +719,8 @@ const removeImg= async(index, imgUrl)=>{
                                         <div className='form-group'>
                                             <h6>LOCATION</h6>
                                             {
-                                                context.countryList?.length !==0 && <CountryDropdown countryList={context.countryList}/>
+                                                context.countryList?.length !==0 && <CountryDropdown countryList={context.countryList} selectedLocation={context.selectedCountry}/>
                                             }
-                                                    {/* <Select
-                                                    displayEmpty                                           
-                                                    MenuProps={MenuProps}
-                                                    value={selectedLocation}
-                                                    onChange={handleChangeLocation}
-                                                    className='w-100'
-                                                    >
-                                                        <MenuItem className='text-capitalize' value={null} onClick={(e)=>e.stopPropagation()}>
-                                                            <input type='text'/>
-                                                        </MenuItem>
-                                                    {
-                                                        countryList?.length!==0 && countryList?.map((item, index)=>{
-                                                            return(
-                                                                <MenuItem className='text-capitalize' value={item.country} key={index}>{item.country}</MenuItem>
-                                                            )
-                                                        })
-                                                    }
-                                                
-                                                </Select> */}
                                         </div>
                                     </div>
                                 </div>
@@ -786,7 +730,7 @@ const removeImg= async(index, imgUrl)=>{
                     
                     <div className='card p-4 mt-0'>
                                 <div className='imageUploadSec'>
-                                    <h5 className='mb-4'> Media And Published</h5>
+                                    {/* <h5 className='mb-4'> Media And Published</h5>
                                     <div className='imgUploadBox d-flex align-items-center'>                             
                                     {
                                         previews?.length!==0 && previews?.map((img, index)=>{
@@ -819,7 +763,45 @@ const removeImg= async(index, imgUrl)=>{
                                         </div>
                                     </div>
                                     <br/>
-                                    <Button type="submit" className='btn-blue btn-lg btn-big w-100'><FaCloudUploadAlt/> &nbsp; {isLoading===true ? <CircularProgress color="inherit" className="ml-3 loader" /> : 'PUBLISH AND VIEW'} </Button>
+                                    <Button type="submit" className='btn-blue btn-lg btn-big w-100'><FaCloudUploadAlt/> &nbsp; {isLoading===true ? <CircularProgress color="inherit" className="ml-3 loader" /> : 'PUBLISH AND VIEW'} </Button> */}
+
+                                            <h5 className='mb-4'>Media And Published</h5>
+                                            <div className='imgUploadBox d-flex align-items-center'>                             
+                                            {
+                                                previews?.length !== 0 && previews?.map((img, index) => {
+                                                return (
+                                                    <div className='uploadBox' key={index}>
+                                                    <span className='remove' onClick={() => removeImg(index, img)}><IoCloseSharp/></span>
+                                                    <div className='box'>
+                                                        <img src={img} className='w-100' alt='' />
+                                                    </div>
+                                                    </div>
+                                                )
+                                                })
+                                            }
+                                            <div className='uploadBox'>
+                                                {
+                                                uploading === true ?
+                                                <div className='progressBar text-center d-flex align-items-center flex-column'><CircularProgress />
+                                                    <span>Uploading...</span>
+                                                </div>
+                                                :
+                                                <>
+                                                    <input type='file' multiple onChange={(e) => onChangeFile(e, '/api/products/upload')} name='images' />
+                                                    <div className='info'>
+                                                    <FaRegImages />
+                                                    <h5>Image Upload</h5>
+                                                    </div>
+                                                </>
+                                                }
+                                            </div>
+                                            </div>
+                                            <br/>
+                                            <Button type="submit" className='btn-blue btn-lg btn-big w-100'>
+                                            <FaCloudUploadAlt /> &nbsp; 
+                                            {isLoading === true ? <CircularProgress color="inherit" className="ml-3 loader" /> : 'PUBLISH AND VIEW'} 
+                                            </Button>
+
                                 
                                 </div>
                         <br/>

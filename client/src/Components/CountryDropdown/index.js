@@ -23,6 +23,8 @@ const CountryDropdown = () => {
         setselectedTab(index);
         setisOpenModal(false); 
         context.setselectedCountry(country)
+        localStorage.setItem("location",country);
+        window.location.href ="/";
     }
     useEffect(()=>{
         setcountryList(context.countryList);

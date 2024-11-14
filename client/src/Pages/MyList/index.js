@@ -84,7 +84,7 @@ const MyList = () => {
                                                 </Link>
                                             </td>
                                             <td width="15%">
-                                                Rs. {item.price}
+                                                $ {item.price}
                                             </td>
                                             <td width="10%">
                                                 <span className="remove" onClick={() => removeItem(item._id)}>

@@ -93,12 +93,14 @@ const AddSubCat=()=>{
                                 href="/"
                                 label="Home"
                                 icon={<HomeIcon fontSize="small" />}
+                                style={{ cursor: "pointer" }}
                                 />
                                 <StyleBreadrumb
                                 component="a"
                                  href="#"
                                 label="Sub Category"
                                 deleteIcon={<ExpandMoreIcon />}
+                                style={{ cursor: "pointer" }}
                                 
                             />
                              <StyleBreadrumb

@@ -12,10 +12,10 @@ import { FaRegImages } from "react-icons/fa";
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
-import {  deleteData, deleteImages, fetchDataFromAPI, postData, postDataImg } from '../../utils/api';
+import {  deleteData, deleteImages, fetchDataFromAPI, postData, uploadImage } from '../../utils/api';
 import { MyContext } from '../../App';
 import { IoCloseSharp } from "react-icons/io5";
-import OutlinedInput from '@mui/material/OutlinedInput';
+// import OutlinedInput from '@mui/material/OutlinedInput';
 const StyleBreadrumb= styled(Chip)(({theme})=>{
     const backgroundColor = theme.palette.mode ==='light' 
     ? theme.palette.grey[100]
@@ -416,7 +416,7 @@ const onChangeFile= async(e, apiEndPoint)=>{
         console.log(error);
     }
 
-    postDataImg(apiEndPoint, formData).then((res)=>{
+    uploadImage(apiEndPoint, formData).then((res)=>{
         fetchDataFromAPI("/api/imageUpload").then((response)=>{
             if(response!==undefined && response!==null && response!== "" && response.length!== 0){
                 response.length!==0 && response.map((item)=>{
@@ -460,12 +460,14 @@ const onChangeFile= async(e, apiEndPoint)=>{
                                 href="/"
                                 label="Home"
                                 icon={<HomeIcon fontSize="small" />}
+                                style={{ cursor: "pointer" }}
                                 />
                                 <StyleBreadrumb
                                 component="a"
                                  href="/products"
                                 label="Products"
                                 deleteIcon={<ExpandMoreIcon />}
+                                style={{ cursor: "pointer" }}
                                 
                             />
                              <StyleBreadrumb

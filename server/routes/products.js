@@ -355,6 +355,7 @@ router.post(`/recentlyViewd`, async (req, res) => {
             rating: req.body.rating,
             isFeatured: req.body.isFeatured,
             dateCreated: req.body.dateCreated,
+            location: req.body.location,
         });
         product= await product.save();
         if(!product){
@@ -404,6 +405,7 @@ router.post(`/create`, async (req, res) => {
         rating: req.body.rating,
         isFeatured: req.body.isFeatured,
         dateCreated: req.body.dateCreated,
+        location: req.body.location,
     });
     
     product= await product.save();
@@ -465,7 +467,7 @@ router.put('/:id', async (req, res) => {
             name: req.body.name,
             subCat: req.body.subCat,
             description: req.body.description,
-            images:imagesArr,
+            images:req.body.images || [],
             brand: req.body.brand,
             price: req.body.price,
             oldPrice: req.body.oldPrice,
@@ -480,6 +482,7 @@ router.put('/:id', async (req, res) => {
             rating: req.body.rating,
             isFeatured: req.body.isFeatured,
             dateCreated: req.body.dateCreated,
+            location: req.body.location
         },
         {new: true}
         );

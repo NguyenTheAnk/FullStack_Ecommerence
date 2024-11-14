@@ -38,23 +38,29 @@ const Home = () =>{
     }
     useEffect(()=>{
         // setSelectedCat(context.categoryData[0]?.name);
+        const location = localStorage.getItem('location');
+        if(location !==null && location !== undefined && location !== ""){
+            fetchDataFromAPI(`/api/products?page=1&perPage=8&?location=${location}`).then((res)=>{
+                setProductsData(res);
+               
+           });
+                fetchDataFromAPI(`/api/products/featured?location=${location}`).then((res)=>{
+                    setElectronicData(res);
+                    });
+        }else{
+
+        }
        fetchDataFromAPI("/api/category/").then((res)=>{
             setCatData(res);
             if (res?.categoryList?.length !== 0) {
                 setSelectedCat(res.categoryList[0].name);
             }
        });
-       fetchDataFromAPI("/api/products/").then((res)=>{
-        setProductsData(res);
        
-   });
-        fetchDataFromAPI("/api/products/featured").then((res)=>{
-            setElectronicData(res);
-            });
             fetchDataFromAPI("/api/homeBanner").then((res)=>{
                 setHomeSlides(res);
                 });     
-    
+   
     
     },[]);
 

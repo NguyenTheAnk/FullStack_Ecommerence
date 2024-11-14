@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { FaCloudUploadAlt } from "react-icons/fa";
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { useContext, useState, useEffect } from 'react';
-import { deleteData, deleteImages, editData, postData, postDataImg } from '../../utils/api';
+import { deleteData, deleteImages, editData, postData, postDataImg, uploadImage } from '../../utils/api';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import { MyContext } from '../../App';
@@ -84,7 +84,7 @@ const HomeSlideEdit = () => {
             console.log(error);
         }
     
-        postDataImg(apiEndPoint, formData).then((res)=>{
+        uploadImage(apiEndPoint, formData).then((res)=>{
             fetchDataFromAPI("/api/imageUpload").then((response)=>{
                 if(response!==undefined && response!==null && response!== "" && response.length!== 0){
                     response.length!==0 && response.map((item)=>{
@@ -210,11 +210,13 @@ const HomeSlideEdit = () => {
                                 href="/"
                                 label="Home"
                                 icon={<HomeIcon fontSize="small" />}
+                                style={{ cursor: "pointer" }}
                                 />
                                 <StyleBreadrumb
                                 component="a"
                                 label="Home Banner Slide"
                                 deleteIcon={<ExpandMoreIcon />}
+                                style={{ cursor: "pointer" }}
                                 
                             />
                              <StyleBreadrumb

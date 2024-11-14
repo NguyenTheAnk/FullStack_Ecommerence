@@ -123,6 +123,7 @@ const AddProductRAMS=()=>{
                                 href="/"
                                 label="Home"
                                 icon={<HomeIcon fontSize="small" />}
+                                style={{ cursor: "pointer" }}
                                 />
                                 <StyleBreadrumb
                                 component="a"

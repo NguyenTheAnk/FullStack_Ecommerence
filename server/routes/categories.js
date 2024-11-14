@@ -183,14 +183,12 @@ router.put('/:id', async (req, res) => {
         }
         res.send(category);
 });
-router.delete('/deleteImage', async(req, res)=>{
+router.delete('/deleteImageCat', async(req, res)=>{
     const imgUrl = req.query.img;
     const urlArr = imgUrl.split('/');
     const image = urlArr[urlArr.length - 1];
     const imageName = image.split('.')[0];
-    const response = await cloudinary.uploader.destroy(imageName, (error, result)=>{
-
-    });
+    const response = await cloudinary.uploader.destroy(imageName);
     if(response){
         res.status(200).send(response);
     }

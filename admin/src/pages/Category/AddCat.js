@@ -9,7 +9,7 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 // import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { useContext, useState, useEffect } from 'react';
-import { deleteData, deleteImages, fetchDataFromAPI, postData, postDataImg } from '../../utils/api';
+import { deleteData, deleteImages, fetchDataFromAPI, postData, uploadImage } from '../../utils/api';
 // import OutlinedInput from '@mui/material/OutlinedInput';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
@@ -41,7 +41,6 @@ const CategoryAdd = () => {
     const context = useContext(MyContext);
     // const { enqueueSnackbar } = useSnackbar();
     const [previews, setPreviews] = useState([]);
-    const [files, setFiles] = useState([]);
     const [imgFiles, setImgFiles] = useState();
     const [formField, setFormField] = useState({
         name: '',
@@ -64,7 +63,7 @@ const CategoryAdd = () => {
     let uniqueArray=[];
     const removeImg= async(index, imgUrl)=>{
         const imgIndex = previews.indexOf(imgUrl);
-        deleteImages(`/api/category/deleteImage?img=${imgUrl}`).then((res)=>{
+        deleteImages(`/api/category/deleteImageCat?img=${imgUrl}`).then((res)=>{
             context.setAlertBox({
                 open: true,
                 error: false,
@@ -119,7 +118,7 @@ const CategoryAdd = () => {
             console.log(error);
         }
 
-        postDataImg(apiEndPoint, formData).then((res)=>{
+        uploadImage(apiEndPoint, formData).then((res)=>{
             fetchDataFromAPI("/api/imageUpload").then((response)=>{
                 if(response!==undefined && response!==null && response!== "" && response.length!== 0){
                     response.length!==0 && response.map((item)=>{
@@ -235,12 +234,14 @@ const CategoryAdd = () => {
                                 href="/"
                                 label="Home"
                                 icon={<HomeIcon fontSize="small" />}
+                                style={{ cursor: "pointer" }}
                                 />
                                 <StyleBreadrumb
                                 component="a"
                                  href="/category"
                                 label="Category"
                                 deleteIcon={<ExpandMoreIcon />}
+                                style={{ cursor: "pointer" }}
                                 
                             />
                              <StyleBreadrumb

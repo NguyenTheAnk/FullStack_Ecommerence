@@ -7,7 +7,7 @@ import { IoMdClose } from "react-icons/io";
 import { useState } from 'react';
 import Slide from '@mui/material/Slide';
 import { MyContext } from '../../App';
-
+import { useParams } from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props,ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -17,7 +17,7 @@ const CountryDropdown = (props) => {
     const [isOpenModal, setisOpenModal] = useState(false);
     const [selectedTab, setselectedTab] = useState(null);
     const [countryList, setcountryList] = useState([]);
-
+    let {id} = useParams();
     const context = useContext(MyContext);
     const selectCountry = (index, country)=>{
         setselectedTab(index);
@@ -25,8 +25,10 @@ const CountryDropdown = (props) => {
         context.setselectedCountry(country)
     }
     useEffect(()=>{
-        setcountryList(props.countryList);
+        setcountryList(context.countryList);
+        context.setselectedCountry(props.selectedLocation);
     }, [])
+    
 
     const fillterList =(e) =>{
         const keyword = e.target.value.toLowerCase();
@@ -36,23 +38,22 @@ const CountryDropdown = (props) => {
             })
             setcountryList(list);
         }else{
-            setcountryList(props.countryList);
+            setcountryList(context.countryList);
         }    
        
 
     }
     return (
         <>
-        <Button className='countryDrop' onClick={()=> setisOpenModal(true)}>
+        <Button className='countryDrop' onClick={()=> {setisOpenModal(true); setcountryList(context.countryList);}} >
             <div className='info d-flex flex-column'>
-                <span className='label'>Your Locations</span>
-                <span className='name'>{context.selectedCountry!=="" ? context.selectedCountry.length>10 ? context.selectedCountry?. substr(0,10) + '...': context.selectedCountry: 'Select area'}</span>
+                <span className='name'>{context.selectedCountry!=="" ? context.selectedCountry?.length>10 ? context.selectedCountry?. substr(0,10) + '...': context.selectedCountry: 'Select location'}</span>
             </div>
             <span className='ml-auto'><FaAngleDown/></span>
         </Button>
 
 
-            <Dialog open={isOpenModal} onClose={()=> setisOpenModal(false)} className='locationModal' TransitionComponent={Transition}>
+            <Dialog open={isOpenModal} onClose={()=> setisOpenModal(false)} className='locationModal'>
                 <h4>Choose your Delivery Location</h4>
                 <p>Enter your address and we will specify the offer for your area.</p>
                 <Button className='close_' onClick={()=> setisOpenModal(false)}><IoMdClose/></Button>

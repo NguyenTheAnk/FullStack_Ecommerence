@@ -642,6 +642,8 @@ body.dark .topLoadingBar{background: #ff4964 !important;}
  .countryDrop .name{font-size: 14px !important; text-transform: capitalize !important; 
   color: #6d4aae !important; font-weight: 700; line-height: 16px}
 
+  body.dark .countryDrop .name{font-size: 14px !important; text-transform: capitalize !important; 
+    color: #bcd2fd !important; font-weight: 700; line-height: 16px}
  .countryDrop span.ml-auto svg{opacity: 0.7;}
 
  
